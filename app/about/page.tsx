@@ -1,92 +1,15 @@
 "use client";
 
-import React from "react";
+import { useEffect, useRef } from "react";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { Navbar } from "@/components/layout/navbar";
 
-export default function AboutPage() {
-  return (
-    <main className="flex min-h-screen flex-col">
-      <Navbar />
-      <div className="relative isolate pt-14">
-        {/* Hero section */}
-        <div className="py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:text-center">
-              <h2 className="text-base font-semibold leading-7 text-[#228B22]">
-                회사 소개
-              </h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                50년 전통의 기술력,
-                <br />
-                신뢰할 수 있는 기업
-              </p>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
-                삼정펄프는 1973년 설립 이래 끊임없는 혁신과 연구개발을 통해
-                <br />
-                대한민국 펄프 산업을 선도해 왔습니다.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* History section */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:max-w-4xl">
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              연혁
-            </h2>
-            <dl className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
-              {history.map((item) => (
-                <div key={item.year} className="relative pl-9">
-                  <dt className="inline font-semibold text-gray-900">
-                    <div className="absolute left-1 top-1 h-5 w-5 text-[#003399]">
-                      {item.year}
-                    </div>
-                  </dt>{" "}
-                  <dd className="inline">{item.description}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-
-        {/* Vision section */}
-        <div className="mx-auto mt-32 max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              비전
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              삼정펄프는 지속 가능한 미래를 위해 환경과 사회적 가치를 창출하며,
-              <br />
-              고객에게 신뢰받는 글로벌 기업으로 성장하고자 합니다.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-              {visions.map((vision) => (
-                <div
-                  key={vision.name}
-                  className="flex flex-col justify-between items-start"
-                >
-                  <dt className="text-lg font-semibold leading-7 text-gray-900">
-                    {vision.name}
-                  </dt>
-                  <dd className="mt-4 text-base leading-7 text-gray-600">
-                    {vision.description}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+interface TimelineEntry {
+  year: string;
+  description: string;
 }
 
-const history = [
+const history: TimelineEntry[] = [
   {
     year: "2024",
     description:
@@ -166,18 +89,85 @@ const history = [
   },
 ];
 
-const visions = [
-  {
-    name: "환경 보호",
-    description:
-      "지속 가능한 생산 방식과 친환경 기술 개발을 통해 환경 보호에 앞장섭니다.",
-  },
-  {
-    name: "품질 혁신",
-    description: "끊임없는 연구개발과 품질 혁신으로 최고의 제품을 제공합니다.",
-  },
-  {
-    name: "사회적 책임",
-    description: "기업의 사회적 책임을 다하며, 지역사회와 함께 성장합니다.",
-  },
-];
+const TimelineEntry = ({
+  entry,
+  index,
+}: {
+  entry: TimelineEntry;
+  index: number;
+}) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    }
+  }, [isInView, controls]);
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const isEven = index % 2 === 0;
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={variants}
+      className={`flex ${
+        isEven ? "flex-row" : "flex-row-reverse"
+      } items-center mb-8`}
+    >
+      <div
+        className={`w-5/12 ${isEven ? "text-right pr-4" : "text-left pl-4"}`}
+      >
+        <h3 className="text-xl font-bold mb-2">{entry.year}</h3>
+        <p className="text-gray-600">{entry.description}</p>
+      </div>
+      <div className="w-2/12 flex justify-center">
+        <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+      </div>
+      <div className="w-5/12"></div>
+    </motion.div>
+  );
+};
+
+export default function AboutPage() {
+  return (
+    <main className="flex min-h-screen flex-col">
+      <Navbar />
+      <div className="container mx-auto px-4 py-16">
+        <div className="mx-auto max-w-2xl lg:text-center mb-16">
+          <h2 className="text-base font-semibold leading-7 text-[#228B22]">
+            회사 소개
+          </h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            50년 전통의 기술력,
+            <br />
+            신뢰할 수 있는 기업
+          </p>
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            삼정펄프는 1973년 설립 이래 끊임없는 혁신과 연구개발을 통해
+            <br />
+            대한민국 펄프 산업을 선도해 왔습니다.
+          </p>
+        </div>
+        <div className="relative">
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200"></div>
+          {history.map((entry, index) => (
+            <TimelineEntry key={entry.year} entry={entry} index={index} />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
