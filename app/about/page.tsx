@@ -123,20 +123,30 @@ const TimelineEntry = ({
       initial="hidden"
       animate={controls}
       variants={variants}
-      className={`flex ${
-        isEven ? "flex-row" : "flex-row-reverse"
-      } items-center mb-8`}
+      className={`flex md:flex-row items-center mb-8 ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } flex-row`}
     >
       <div
-        className={`w-5/12 ${isEven ? "text-right pr-4" : "text-left pl-4"}`}
+        className={`w-full md:w-5/12 ${
+          isEven ? "md:text-right md:pr-4" : "md:text-left md:pl-4"
+        } pl-16 relative`}
       >
-        <h3 className="text-xl font-bold mb-2">{entry.year}</h3>
-        <p className="text-gray-600">{entry.description}</p>
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 md:hidden flex items-center">
+          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+          <div className="w-12 h-0.5 bg-gray-200"></div>
+        </div>
+        <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 text-blue-600">
+          {entry.year}
+        </h3>
+        <p className="text-sm md:text-base text-gray-600">
+          {entry.description}
+        </p>
       </div>
-      <div className="w-2/12 flex justify-center">
+      <div className="hidden md:flex w-2/12 justify-center">
         <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
       </div>
-      <div className="w-5/12"></div>
+      <div className="hidden md:block w-5/12"></div>
     </motion.div>
   );
 };
@@ -145,24 +155,17 @@ export default function AboutPage() {
   return (
     <main className="flex min-h-screen flex-col">
       <Navbar />
-      <div className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-2xl lg:text-center mb-16">
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="mx-auto max-w-2xl lg:text-center mb-8 md:mb-16">
           <h2 className="text-base font-semibold leading-7 text-[#228B22]">
             회사 소개
           </h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            50년 전통의 기술력,
-            <br />
-            신뢰할 수 있는 기업
-          </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            삼정펄프는 1973년 설립 이래 끊임없는 혁신과 연구개발을 통해
-            <br />
-            대한민국 펄프 산업을 선도해 왔습니다.
+          <p className="mt-2 text-2xl md:text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Our History
           </p>
         </div>
         <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200"></div>
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 md:w-1 bg-gray-200 md:-translate-x-1/2"></div>
           {history.map((entry, index) => (
             <TimelineEntry key={entry.year} entry={entry} index={index} />
           ))}
