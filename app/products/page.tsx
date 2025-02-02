@@ -2,14 +2,6 @@
 
 import React from "react";
 import { Navbar } from "@/components/layout/navbar";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 
 interface Division {
