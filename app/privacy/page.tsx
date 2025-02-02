@@ -84,10 +84,10 @@ export default function PrivacyPage() {
           <section className="mb-12">
             <h2 className="mb-4 text-2xl font-bold">개인정보의 제3자 제공</h2>
             <p className="mb-4 text-gray-600">
-              삼정펄프(주)는 고객님의 개인정보를 "개인정보의 수집 항목 및 이용
-              목적"에서 규정한 범위 내에서 사용하며, 범위를 초과하여 이용하거나
-              타인 또는 타기업, 기관에 제공하지 않습니다. 다만, 아래의 경우에는
-              예외로 합니다.
+              삼정펄프(주)는 고객님의 개인정보를 &ldquo;개인정보의 수집 항목 및
+              이용 목적&rdquo;에서 규정한 범위 내에서 사용하며, 범위를 초과하여
+              이용하거나 타인 또는 타기업, 기관에 제공하지 않습니다. 다만,
+              아래의 경우에는 예외로 합니다.
             </p>
             <ul className="list-inside list-disc space-y-1 pl-4 text-gray-600">
               <li>고객님으로부터 별도의 동의를 얻은 경우</li>
